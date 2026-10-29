@@ -6,7 +6,7 @@
 ![Tabelas](https://img.shields.io/badge/tabelas-16-blue)
 ![Views](https://img.shields.io/badge/views-7-blue)
 
-> Dump em SQL do banco **Sakila**, que simula uma rede de locadoras de DVD com filmes, estoque, clientes, aluguéis e pagamentos. Ideal para estudar modelagem relacional e praticar consultas em MySQL.
+> Dump em SQL do banco **Sakila**, que simula uma rede Portais Escolares
 
 ---
 
