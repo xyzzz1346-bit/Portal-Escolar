@@ -1,12 +1,12 @@
-[README (1).md](https://github.com/user-attachments/files/34133392/README.1.md)
-# 🎬 Sakila DB: Portal Escolar
+[README (2).md](https://github.com/user-attachments/files/34134316/README.2.md)
+# 🎓 Portal Escolar: Banco de Dados Acadêmico
 
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-dump-lightgrey)
-![Tabelas](https://img.shields.io/badge/tabelas-16-blue)
-![Views](https://img.shields.io/badge/views-7-blue)
+![Tabelas](https://img.shields.io/badge/tabelas-5-blue)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
-> Dump em SQL do banco **Sakila**, que simula uma rede Portais Escolares
+> Estrutura de banco de dados em MySQL para um portal escolar, com turmas, alunos, disciplinas, notas e frequência.
 
 ---
 
@@ -19,7 +19,7 @@
 - [Como usar](#-como-usar)
 - [Exemplos de consultas](#-exemplos-de-consultas)
 - [Estrutura do repositório](#-estrutura-do-repositório)
-- [Limitações conhecidas](#️-limitações-conhecidas)
+- [Limitações e melhorias planejadas](#️-limitações-e-melhorias-planejadas)
 - [Licença](#-licença)
 - [Autor](#-autor)
 
@@ -27,58 +27,36 @@
 
 ## 💡 Sobre
 
-O **Sakila** é um banco de dados de exemplo criado pela equipe do MySQL para ensino e testes. Ele representa uma rede com **duas lojas** de locação de filmes: cada loja tem funcionários, um estoque de cópias e clientes que alugam filmes e pagam por eles.
+O **Portal Escolar** é o banco de dados `portal_escolar`, que guarda as informações acadêmicas básicas de uma instituição de ensino: em que turma cada aluno está, quais disciplinas existem e como cada aluno se saiu em notas e presença.
 
-Este repositório reúne o dump do banco em arquivos `.sql`, **um por tabela**, mais um arquivo com as **views**. Com ele é possível recriar o banco completo (estrutura, dados e relacionamentos) em qualquer servidor MySQL 8.0+ e usá-lo para praticar `JOIN`s, agregações, subconsultas e views.
+Este repositório contém o dump do banco em arquivos `.sql`, **um por tabela**. Ele pode servir de base para um sistema web ou mobile de consulta de boletim e frequência, ou como exercício de modelagem e SQL.
 
-<!-- Opcional: acrescente aqui o motivo de você ter montado este repositório (disciplina, exercício, estudo). -->
+> **Estado atual:** os dumps trazem apenas a **estrutura** das tabelas. Ainda não há registros cadastrados.
+
+<!-- Opcional: conte aqui o contexto do projeto (disciplina, trabalho, protótipo de sistema). -->
 
 ## ✨ Funcionalidades
 
-- **Catálogo de filmes** com 1.000 títulos, 200 atores, 16 categorias e 6 idiomas, ligados por tabelas de relacionamento N:N.
-- **Controle de estoque** por loja: 4.581 cópias físicas de filmes distribuídas entre as 2 lojas.
-- **Gestão de clientes e funcionários**, com endereço completo (endereço, cidade e país).
-- **Histórico de locações e pagamentos**: 16.044 aluguéis e 16.044 pagamentos.
-- **Integridade referencial**: 22 chaves estrangeiras garantem a consistência entre as tabelas.
-- **7 views prontas** para relatórios:
+- **Cadastro de turmas:** nome da turma, curso, ano e período (por exemplo, noturno).
+- **Cadastro de alunos:** RA (registro acadêmico), nome, data de nascimento e turma.
+- **Cadastro de disciplinas:** catálogo com o nome de cada disciplina.
+- **Registro de notas:** duas notas por aluno em cada disciplina, mais a média.
+- **Controle de frequência:** total de aulas, presenças, faltas e percentual de frequência por aluno e disciplina.
 
-| View | O que mostra |
-|---|---|
-| `sales_by_store` | Faturamento total por loja, com o nome do gerente |
-| `sales_by_film_category` | Faturamento total por categoria, do maior para o menor |
-| `film_list` | Filmes com categoria, preço, duração, classificação e atores |
-| `nicer_but_slower_film_list` | Igual à anterior, com nomes dos atores formatados (mais lenta) |
-| `actor_info` | Cada ator com seus filmes agrupados por categoria |
-| `customer_list` | Clientes com endereço, cidade, país e situação (ativo) |
-| `staff_list` | Funcionários com endereço, cidade e país |
+### Tabelas
 
-### Conteúdo das tabelas
-
-Cerca de **47 mil registros** no total:
-
-| Grupo | Tabela | Registros |
-|---|---|---:|
-| Catálogo | `film` | 1.000 |
-| | `film_text` | 1.000 |
-| | `actor` | 200 |
-| | `film_actor` | 5.462 |
-| | `category` | 16 |
-| | `film_category` | 1.000 |
-| | `language` | 6 |
-| Operação | `store` | 2 |
-| | `staff` | 2 |
-| | `inventory` | 4.581 |
-| | `customer` | 599 |
-| | `rental` | 16.044 |
-| | `payment` | 16.044 |
-| Endereços | `address` | 603 |
-| | `city` | 600 |
-| | `country` | 109 |
+| Tabela | Descrição | Principais colunas |
+|---|---|---|
+| `turmas` | Turmas da instituição | `id_turma`, `nome_turma`, `curso`, `ano`, `periodo` |
+| `alunos` | Alunos matriculados | `id_aluno`, `ra`, `nome`, `data_nascimento`, `id_turma` |
+| `disciplinas` | Disciplinas oferecidas | `id_disciplina`, `nome_disciplina` |
+| `notas` | Notas por aluno e disciplina | `id_nota`, `id_aluno`, `id_disciplina`, `nota1`, `nota2`, `media` |
+| `frequencia` | Presenças por aluno e disciplina | `id_frequencia`, `id_aluno`, `id_disciplina`, `aulas`, `presencas`, `faltas`, `frequencia_percentual` |
 
 ## 🛠️ Tecnologias utilizadas
 
 - **MySQL 8.0** (dump gerado na versão 8.0.46)
-- **SQL** (DDL, DML e views)
+- **SQL** (DDL e DML)
 - **InnoDB** como engine, com charset `utf8mb4` e collation `utf8mb4_0900_ai_ci`
 - **mysqldump 10.13** para gerar os arquivos
 - **Mermaid** para o diagrama do modelo de dados
@@ -86,32 +64,52 @@ Cerca de **47 mil registros** no total:
 
 ## 🗂️ Modelo de dados
 
+Os relacionamentos abaixo são **lógicos**, deduzidos dos nomes das colunas. O dump atual ainda não declara chaves estrangeiras (veja [Limitações](#️-limitações-e-melhorias-planejadas)).
+
 ```mermaid
 erDiagram
-    country ||--o{ city : possui
-    city ||--o{ address : possui
-    address ||--o{ customer : "mora em"
-    address ||--o{ staff : "mora em"
-    address ||--o{ store : "localiza"
-    store ||--o{ customer : atende
-    store ||--o{ staff : emprega
-    store ||--o{ inventory : estoca
-    staff ||--o| store : gerencia
-    language ||--o{ film : "idioma de"
-    film ||--o{ inventory : "tem cópias"
-    film ||--o{ film_actor : ""
-    actor ||--o{ film_actor : ""
-    film ||--o{ film_category : ""
-    category ||--o{ film_category : ""
-    inventory ||--o{ rental : "é alugada"
-    customer ||--o{ rental : realiza
-    staff ||--o{ rental : registra
-    customer ||--o{ payment : paga
-    staff ||--o{ payment : recebe
-    rental |o--o{ payment : "gera"
-```
+    turmas ||--o{ alunos : "tem"
+    alunos ||--o{ notas : "recebe"
+    disciplinas ||--o{ notas : "avalia"
+    alunos ||--o{ frequencia : "possui"
+    disciplinas ||--o{ frequencia : "registra"
 
-A tabela `film` tem ainda uma segunda chave para `language` (`original_language_id`).
+    turmas {
+        int id_turma PK
+        varchar nome_turma
+        varchar curso
+        int ano
+        varchar periodo
+    }
+    alunos {
+        int id_aluno PK
+        varchar ra
+        varchar nome
+        date data_nascimento
+        int id_turma FK
+    }
+    disciplinas {
+        int id_disciplina PK
+        varchar nome_disciplina
+    }
+    notas {
+        int id_nota PK
+        int id_aluno FK
+        int id_disciplina FK
+        decimal nota1
+        decimal nota2
+        decimal media
+    }
+    frequencia {
+        int id_frequencia PK
+        int id_aluno FK
+        int id_disciplina FK
+        int aulas
+        int presencas
+        int faltas
+        decimal frequencia_percentual
+    }
+```
 
 ---
 
@@ -126,8 +124,8 @@ A tabela `film` tem ainda uma segunda chave para `language` (`original_language_
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git
-cd SEU-REPOSITORIO
+git clone https://github.com/SEU-USUARIO/portal-escolar.git
+cd portal-escolar
 ```
 
 ### 2. Crie o banco de dados
@@ -135,105 +133,122 @@ cd SEU-REPOSITORIO
 Os dumps **não** incluem `CREATE DATABASE` nem `USE`, então crie o banco antes:
 
 ```sql
-CREATE DATABASE sakila CHARACTER SET utf8mb4;
+CREATE DATABASE portal_escolar CHARACTER SET utf8mb4;
 ```
 
-### 3. Importe as tabelas e depois as views
+### 3. Importe as tabelas
 
 **Linux, macOS ou Git Bash:**
 
 ```bash
-for t in actor address category city country customer film film_actor \
-         film_category film_text inventory language payment rental staff store; do
-  mysql -u root -p sakila < sakila_$t.sql
+for t in turmas alunos disciplinas notas frequencia; do
+  mysql -u root -p portal_escolar < portal_escolar_$t.sql
 done
-
-# As views por último, pois dependem de todas as tabelas
-mysql -u root -p sakila < sakila_routines.sql
 ```
 
 **Windows (PowerShell ou CMD):** o operador `<` não funciona no PowerShell. Dentro do cliente `mysql`, use `SOURCE`:
 
 ```sql
-USE sakila;
-SOURCE C:/caminho/para/sakila_actor.sql;
--- repita para cada tabela e termine com:
-SOURCE C:/caminho/para/sakila_routines.sql;
+USE portal_escolar;
+SOURCE C:/caminho/para/portal_escolar_turmas.sql;
+SOURCE C:/caminho/para/portal_escolar_alunos.sql;
+SOURCE C:/caminho/para/portal_escolar_disciplinas.sql;
+SOURCE C:/caminho/para/portal_escolar_notas.sql;
+SOURCE C:/caminho/para/portal_escolar_frequencia.sql;
 ```
 
-> A ordem das tabelas não importa, porque cada arquivo desliga a checagem de chaves estrangeiras durante a carga. Só as views precisam vir por último.
-
-### 4. Confira se deu certo
+### 4. Confira a importação
 
 ```sql
-USE sakila;
-SELECT COUNT(*) FROM film;     -- esperado: 1000
-SELECT COUNT(*) FROM rental;   -- esperado: 16044
-SELECT * FROM sales_by_store;  -- deve listar as 2 lojas
+USE portal_escolar;
+SHOW TABLES;   -- deve listar 5 tabelas
+```
+
+### 5. (Opcional) Insira dados de teste
+
+Como as tabelas vêm vazias, este exemplo permite testar as consultas:
+
+```sql
+INSERT INTO turmas      VALUES (1, 'ADS-1A', 'Análise e Desenvolvimento de Sistemas', 2026, 'Noturno');
+INSERT INTO alunos      VALUES (1, 'RA2026001', 'Maria Souza', '2005-03-14', 1);
+INSERT INTO disciplinas VALUES (1, 'Banco de Dados');
+INSERT INTO notas       VALUES (1, 1, 1, 8.50, 7.00, 7.75);
+INSERT INTO frequencia  VALUES (1, 1, 1, 40, 38, 2, 95.00);
 ```
 
 ## 🔎 Exemplos de consultas
 
-**Faturamento por loja e por categoria** (views prontas):
+**Quantidade de alunos por turma:**
 
 ```sql
-SELECT * FROM sales_by_store;
-SELECT * FROM sales_by_film_category;
+SELECT t.nome_turma, COUNT(a.id_aluno) AS total_alunos
+FROM turmas t
+LEFT JOIN alunos a ON a.id_turma = t.id_turma
+GROUP BY t.id_turma, t.nome_turma;
 ```
 
-**Os 10 filmes mais alugados:**
+**Boletim de notas:**
 
 ```sql
-SELECT f.title, COUNT(*) AS alugueis
-FROM rental r
-JOIN inventory i ON i.inventory_id = r.inventory_id
-JOIN film f      ON f.film_id = i.film_id
-GROUP BY f.film_id, f.title
-ORDER BY alugueis DESC
-LIMIT 10;
+SELECT a.nome, d.nome_disciplina, n.nota1, n.nota2, n.media
+FROM notas n
+JOIN alunos a      ON a.id_aluno = n.id_aluno
+JOIN disciplinas d ON d.id_disciplina = n.id_disciplina
+ORDER BY a.nome, d.nome_disciplina;
 ```
 
-**Filmes de uma atriz:**
+**Alunos com frequência abaixo de 75%** (ajuste o limite conforme a regra da sua instituição):
 
 ```sql
-SELECT f.title
-FROM actor a
-JOIN film_actor fa ON fa.actor_id = a.actor_id
-JOIN film f        ON f.film_id = fa.film_id
-WHERE a.first_name = 'PENELOPE' AND a.last_name = 'GUINESS'
-ORDER BY f.title;
+SELECT a.nome, d.nome_disciplina, f.frequencia_percentual
+FROM frequencia f
+JOIN alunos a      ON a.id_aluno = f.id_aluno
+JOIN disciplinas d ON d.id_disciplina = f.id_disciplina
+WHERE f.frequencia_percentual < 75
+ORDER BY f.frequencia_percentual;
 ```
 
 ## 📁 Estrutura do repositório
 
 ```text
 .
-├── sakila_actor.sql           # uma tabela por arquivo (estrutura + dados)
-├── sakila_address.sql
-├── sakila_category.sql
-├── sakila_city.sql
-├── sakila_country.sql
-├── sakila_customer.sql
-├── sakila_film.sql
-├── sakila_film_actor.sql
-├── sakila_film_category.sql
-├── sakila_film_text.sql
-├── sakila_inventory.sql
-├── sakila_language.sql
-├── sakila_payment.sql
-├── sakila_rental.sql
-├── sakila_staff.sql
-├── sakila_store.sql
-├── sakila_routines.sql        # as 7 views (importar por último)
+├── portal_escolar_turmas.sql        # uma tabela por arquivo (estrutura)
+├── portal_escolar_alunos.sql
+├── portal_escolar_disciplinas.sql
+├── portal_escolar_notas.sql
+├── portal_escolar_frequencia.sql
 └── README.md
 ```
 
-## ⚠️ Limitações conhecidas
+## ⚠️ Limitações e melhorias planejadas
 
-- **Sem triggers, procedures ou functions.** Apesar do nome, `sakila_routines.sql` contém só as views. Na versão oficial do Sakila, triggers mantêm `film_text` sincronizada com `film`; aqui isso não acontece.
-- **Views com `DEFINER=root@localhost`.** Ao importar com outro usuário, pode ser necessário ajustar o `DEFINER` ou ter privilégios elevados.
-- **Dados fictícios.** Nomes, endereços e valores não representam pessoas ou negócios reais.
+O banco está em fase inicial. Pontos que ainda podem evoluir:
+
+- [ ] **Sem chaves estrangeiras.** `alunos.id_turma`, `notas.id_aluno`, `notas.id_disciplina`, `frequencia.id_aluno` e `frequencia.id_disciplina` não têm `FOREIGN KEY`, então o banco não impede registros órfãos.
+- [ ] **Chaves primárias sem `AUTO_INCREMENT`.** Os ids precisam ser informados manualmente em cada `INSERT`.
+- [ ] **Colunas aceitam `NULL`.** Campos como `nome`, `ra` e `id_aluno` poderiam ser `NOT NULL`, e `ra` poderia ser `UNIQUE`.
+- [ ] **Valores calculados armazenados.** `media`, `faltas` e `frequencia_percentual` podem ser derivados de outras colunas e correm o risco de ficar inconsistentes. Uma alternativa é calculá-los em uma view ou em colunas geradas.
+- [ ] **Sem vínculo entre turmas e disciplinas.** Não há como saber quais disciplinas pertencem a cada turma, nem qual professor as ministra.
+- [ ] **Sem períodos letivos.** Notas e frequência não indicam bimestre, semestre ou ano.
+- [ ] **Sem dados.** Os dumps contêm só a estrutura.
+
+Exemplo de como declarar as chaves estrangeiras:
+
+```sql
+ALTER TABLE alunos
+  ADD CONSTRAINT fk_alunos_turma FOREIGN KEY (id_turma) REFERENCES turmas (id_turma);
+
+ALTER TABLE notas
+  ADD CONSTRAINT fk_notas_aluno      FOREIGN KEY (id_aluno)      REFERENCES alunos (id_aluno),
+  ADD CONSTRAINT fk_notas_disciplina FOREIGN KEY (id_disciplina) REFERENCES disciplinas (id_disciplina);
+
+ALTER TABLE frequencia
+  ADD CONSTRAINT fk_freq_aluno      FOREIGN KEY (id_aluno)      REFERENCES alunos (id_aluno),
+  ADD CONSTRAINT fk_freq_disciplina FOREIGN KEY (id_disciplina) REFERENCES disciplinas (id_disciplina);
+```
 
 ## 📜 Licença
 
-O banco Sakila foi criado pela equipe do MySQL e é distribuído com licença BSD. Confira os termos atuais na [documentação oficial](https://dev.mysql.com/doc/sakila/en/) antes de redistribuir.
+<!-- Escolha uma licença (por exemplo MIT), adicione o arquivo LICENSE e atualize esta seção. -->
+
+Defina a licença do projeto antes de publicá-lo.
