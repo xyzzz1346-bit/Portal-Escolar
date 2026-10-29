@@ -1,5 +1,5 @@
 [README (1).md](https://github.com/user-attachments/files/34133392/README.1.md)
-# 🎬 Sakila DB: Banco de Dados de Locadora de Filmes
+# 🎬 Sakila DB: Portal Escolar
 
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-dump-lightgrey)
